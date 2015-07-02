@@ -1,0 +1,503 @@
+% this TeX file provides an awesome example of how TeX will make super 
+% awesome tables, at the cost of your of what happens when you try to make a
+% table that is very complicated.
+% Originally turned in for Dr. Nico's Security Class
+\documentclass[12pt]{report}
+
+
+% Use wide margins, but not quite so wide as fullpage.sty
+%\marginparwidth 0.5in 
+%\oddsidemargin 0.25in 
+%\evensidemargin 0.25in 
+%\marginparsep 0.25in
+%\topmargin 0.25in 
+%\textwidth 6in \textheight 8 in
+% That's about enough definitions
+
+% multirow allows you to combine rows in columns
+\usepackage{multirow}
+% tabularx allows manual tweaking of column width
+\usepackage{tabularx}
+% longtable does better format for tables that span pages
+\usepackage{graphicx}
+
+\usepackage{hyperref}
+\usepackage{caption}
+
+
+\begin{document}
+
+\author{Cristian Viorel Pasat}
+\title{Communication in Reactive Multiagent Robotic Systems}
+\maketitle
+
+
+
+
+Multiagent robotic systems represents a very important  research topic these days. 
+When designing a robotic system (RS) each physical component has to be carefully analyzed and the designer of the RS has to decide whether a component is really necessary or not, as some of them may bring to little to the whole comparing the costs in incurs.
+
+
+On the other hand, another important part of designing a RS is the type of communication the robots will use, or the lack thereof.
+
+Strategies for choosing a communication method vary wildly, but many are inspired by biological and also ethological studies, as nature offers  plenty of tested and successful examples of both high-level and low-level communication protocols. One of nature's examples is an ant colony, and this will serve as a parallel in  this paper.
+
+
+
+
+\chapter{The three tasks a robotic system should achieve}
+
+Although when designing a RS, its designer is aware of the desired task the RS should fulfil, 
+it is not as easy to chose a communication system that will maximize communication efficiency, and at the same time help finishing the tasks on time.
+
+In order to investigate the different methods used to handle this problem, there are three generic tasks to consider: forage, consume and graze.
+
+
+
+
+
+
+
+
+
+\section{Forage}
+
+This task implies a robot to wander in the environment and search for items of interest (alson known as attractors). As soon as such an item is found, the robot should take the item and retirn it to its central base. 
+
+This task can be easily seen in an ant colony, as foraging represents the ants gathering food.
+
+An example of robots doing this task is searching for soil samples in a difficult to reach (or even life threatening) area for humans, and returning them to a  central base.
+
+An example of 2 robots executing this task can be seen in the \autoref{fig:forage simulation}, where we can find seven objects of interest which are represented as small dots, the obstacles are shown as big circles, and the lines representing the paths taken by the robots. The thick lines represent the paths back to the base, after the robots have retrieved the attractor, while the thin lines represent the robots wandering around in search for the attractors.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{"1 forage simulation"}
+\caption{Forage simulation}
+\label{fig:forage simulation}
+\end{figure}
+
+
+
+
+
+
+
+\section{Consume}
+
+Just like forage, consuming implies robots wandering around and looking for interesting items. Unlike forage however, after finding such an attractor, the robot does not take it back to the base, nut instead it consumes the object. In other words it does some specific actions on the object in place, instead of bringing it over. An example of robots doing this  task is the same group of robots searching for soil samples, but which firstly analyze the samples the collect,
+and only then go to the first task of bringing the valid ones back to the central base.
+
+An example of two robots executing this task is seen in the \autoref{fig:consume simulation}, which has the exact same layout as in the first case. Here we can see that the robots are no longer taking the attractors back to the central base.
+
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{"2 consume simulation"}
+\caption{Consume simulation}
+\label{fig:consume simulation}
+\end{figure}
+
+
+
+
+
+
+
+\section{Graze}
+
+This task differs from the first two, in the sense that the robots are no longer interested in attractors, but their sole purpose is to completely visit the environment.
+
+An example of this task can be seen in the image \autoref{fig:graze simulation}, in which the robots are required to graze 95 \% of the terrain in order to complete their task.
+
+An example of such task is "smart" vacuum cleaners. They have the task to vacuum the whole area, having scanners and logic for dealing with different obstacles in their way.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{"3 graze simulation"}
+\caption{Graze simulation}
+\label{fig:graze simulation}
+\end{figure}
+
+
+
+
+
+\section{Task Parameters}
+
+Each of the mentioned generic tasks have parameters which affect their efficiency, or the speed with which the task is completed.
+
+The most important parameters are the following:
+
+\begin{description}
+
+\item [number of attractors] it is easy to understand that increasing the number of interesting objects a RS has to handle increases the time it takes for the said RS to finish its task.
+-size (mass) of the 
+
+\item [size (mass) of the attractors] generally the bigger the mass of an object, the longer it takes for a robot, or a group of robots to handle the said object. For forage, this determines the speed with which the robot brings  the item at the central base, whilst for consume this determines how much time will be spent "digesting" the object
+
+
+\item [graze coverage] this is particular for the graze task, but it is understandable that the bigger the area, the longer it will take dor the RS to cover it.
+
+\end{description}
+
+
+
+
+
+
+
+\section{Complex tasks}
+
+In this paper, only these three simple tasks will be tackled. However, it is usually manageable to divide bigger, more complex tasks into combinations of these simple tasks.
+
+
+
+
+\chapter{Reactive control}
+
+The term \emph{reactive control} appeared around mid 1980s as a response to the problems regarding systems which relied heavily on internal world models. 
+
+It is characterised by the following properties:
+
+\begin{itemize}
+
+\item  system design is bottom-up: more and more functionality is added to the robot in incremental steps
+
+\item action and perception are linked together
+
+\item there is little need for an explicit world model or representation while the robot carries his tasks
+
+\end{itemize}
+
+A particular type of reactive control is schema-based reactive control. It has the following features which distinguish it from other reactive approaches:
+
+\begin{itemize}
+
+\item the system is flexible because it is allowed a high-level planning to adjust its parameters
+
+\item the flexibility is used to help learning and adaptation of the RS
+
+\item ethological and neuroscientific studies provide a reasoning for using such a schema
+
+\item schemas (behaviours, states) execute concurrently, no arbitration being needed
+
+\item instead of using a hard-wired system, the schema introduces a dynamic network of processes
+
+\end{itemize}
+
+
+In schema-based control, the RS reactions are computed only based on the current environment , location and stimuli, and never on the entire field.
+This schema implies action-oriented perception: this means that a cycle of receive-react is repeated as fast as possible, and no information irrelevant to the current task is processed. 
+
+
+This approach however has some issues such as a cyclic behaviour and local minimums or maximums, but there are strategies of countering these issues: high-level planning, continuous adaptation, using various learning strategies and trying not to visit previously visited places.
+
+Each of the three tasks previously described will be presented now from the point of view of their states.
+
+
+
+
+\section{Forage state}
+
+While performing  this task, the robots can be in either of three states: deliver, aquire or wander.
+
+The first state a robot starts with is the wander state. As long as no important objects (attractors) are detected by the robot's sensors, it will remain in this state. As soon as an attractor is found, the acquire state is selected. Here, the robot's job is to approach the attractor and attach itself to it.
+As soon as this state is finished, the deliver state is selected, and this has the purpose of bringing the robot, along with the attractor to the central base. As of reaching the central base, the robot will place the attractor into a deposit and then resume the state wander.
+
+
+In figure \autoref{fig:forage states} it is shown the schema of this task.
+
+For each state in the forage schema, the parameters it uses and their gains are:
+
+\begin{itemize}
+
+\item wanderer state
+
+    \begin{description}
+    \item [noise] high gain: scan the surroundings and analise if anything is of importance
+    \item [avoid  obstacles] medium to high gain: either static obstacles and especially reject other robots 
+    \item [detect the attractor] rather small gain: this just fires the acquire state
+    
+    \end{description}
+
+\item acquire state
+    
+    \begin{description}
+    
+    \item [noise] small gain:  since the attractor is already found
+    \item [avoid obstacles] same as for the wanderer state
+    \item [move to the goal] high gain: it is extremely important to reach the attractor
+    \item [finish the attachment] small gain: this just fires the deliver state as soon as the robot is attached to the attractor
+
+    \end{description}
+
+\item deliver state
+
+    \begin{description}
+    
+    \item [noise] as in acquire: the only purpose of the robot is to bring the attractor to the central base
+    \item [avoid obstacle] as in the acquire state
+    \item [move to the goal] high gain: the goal is to reach the base with the attractor
+    \item [finish deposit] little gain: this fires the wanderer state again after releasing the attractor at the home base
+    
+    \end{description}
+    
+\end{itemize}
+    
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{"4 forage states"}
+\caption{Forage states}
+\label{fig:forage states}
+\end{figure}
+    
+    
+    
+    
+    
+    
+    
+\section{Consume}
+
+Most of the states , behaviours and gains are shared with the forage task. The only difference being that instead of the deliver state, now we have a consume state named \emph{consume attractor}, which consumes at a steady pace the attractor.
+
+In figure \autoref{fig:consume states} it is shown the schema of this state.
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{"5 consume states"}
+\caption{Consume states}
+\label{fig:consume states}
+\end{figure}
+  
+
+
+
+
+
+
+\section{Graze}
+
+
+This task shares the same wander and acquire states as the previously presented consume and forage tasks, with both behaviours and gains. 
+
+A difference lays in the detect the attractor state, which for the graze task  is replaced by detect any ungrazed area.
+
+As a consequence, the robots start again in the wanderer state, but this time they search for ungrazed zones, instead of looking for any interesting  objects (the ungrazed areas may be considered the attractors). When such an ungrazed area is detected, the robot switches its state to the acquire state, and proceeds to the vicinity of the ungrazed area. The third state, the graze state, is quite different from the final states of the previous two tasks: the robot continues to move forward as long as there is any ungrazed area ahead of it instead of changing its direction.
+
+In order to achieve a successful graze or to reach the grazing percentage required, the robots will store a high-level map of the environment, which is used to direct the robots to any ungrazed areas. As soon as such an area is grazed, it is accordingly marked as such on the high-level map.
+
+
+In figure \autoref{fig:graze states} it is shown the schema of this task.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{"6 graze states"}
+\caption{Graze states}
+\label{fig:graze states}
+\end{figure}
+
+
+
+
+
+
+\chapter{Types of communication used between the robots}
+
+
+This paper will present three distinct communication types.
+
+The first type implies no communication between the RS at all. The second type of communication implies sharing with the other robots only the current state a robot is currently in. And lastly, in the third communication type, the agents wil broadcast to other robotic agents the locations of various goals, if such goals are in their detectable range.
+
+
+
+\section{Using no communication at all}
+
+In a society using such a communication method, no actual communication is allowed between the agents. Each robot is supposed to detect and understand the world by its own means, this including detecting objects of importance, objects of little importance and also other robots in their surroundings, but share none of that knowledge.
+
+
+\section{Sharing current state communication}
+
+This communication type implies that robots are capable of understanding each other's  internal states, and act accordingly. 
+
+This type of communication type can be further simplified by sharing a single bit of data which shows whether an agent is in the wander state, or if an agent is in any of the two remaining states.
+
+On the other hand, this type of communication can be also passive -- in the sense that a robot is not required to share its current internal state, but the other agents are able to detect it. This feature can be exemplified in nature by looking at a cat which is scared, and how her fur is all raised from its body and by the sounds the cat makes if the said cat feels threatened by an external factor.
+
+Sharing states helps the other robots making decisions whether or not to come and participate to this robot's current action (eg. consume the attractor), or just carry on with their tasks. This however implies changing the gains of each state's parameters such that, for example if an agent is found to be in the acquire, or consume, or deliver states, another agent can join and help finish this task faster, or can joing for the sole purpose of having another task than just wonder, since this statemight not have enough gain. This also implies that the robots should be able to follow one another, if one of the robots can not yet detect and attractor, but the other can. As soon as the attractor is detected by all robots, they can stop following and go straight to the attractor.
+
+
+
+
+
+
+\section{Goal communication}
+
+This type of communication is a more complex one compared to the previous ones, and implies that the agents have special means of encoding and decoding various information which relates to each other's goals. This also implies that there is no longer a passive type of communication, but all the messages are send purposely.
+
+A simple example that nature gives us for this type of communication is how the honey bees dance in a particular way to signal other bees that at a particular location and direction, a rich source of  food can be found.
+
+In reactive control, implementing such a state has the intention of helping other agents reach the attractors directly, instead of following the agent which has discovered the attractor. This means that some agents may reach the attractor faster than the agent that discovered it in the first place. This could also mean for example, that the closest agent could take the task only to itself, and tell the detector agent that it should continue to wander if the time to consume the attractor is estimated to be smaller than the time it would take the detector agent to reach the attractor.
+
+
+\section {Communication can be explicit or implicit}
+
+Goal communication and state sharing implies an explicit form of communication: the agents chose to share information about their actions, surroundings or needs. In the example from state sharing: the single bit of data could actually be implemented as a simple light located over the robot which can be either off or on regulated by the internal state of the agent. Although this form of communication is rather superficial, it is still an explicit form of transmitting information to the RS.
+
+Information regarding current cooperation possiblities and goals can be determined via other means, not only explicit ones. For example while grazing, robots are bound to modify the environment they pass through. This can show to other robots that the current internal state of a robot is grazing by simply analizing the environment around them. The analyze step however adds the need of a dedicated perceptional component. Another important aspect of implicit communication is that in this case, it can not be simply shut down as needed. This is a continuous and tacit action.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
