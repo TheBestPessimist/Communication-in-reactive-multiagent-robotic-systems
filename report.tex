@@ -34,13 +34,25 @@
 
 
 
-Multiagent robotic systems represents a very important  research topic these days. 
-When designing a robotic system (RS) each physical component has to be carefully analyzed and the designer of the RS has to decide whether a component is really necessary or not, as some of them may bring to little to the whole comparing the costs in incurs.
+
+\chapter{Introduction}
+
+Multiagent robotic systems represents a very important  research topic these days, and it has appeared in various -- at first sight unrelated -- domains.
+
+As technology advances, various types of robots with various functionality exist. From vacuum cleaning robots, to huge agricultural machines, such robots have their own software which helps them execute their work, usually with little difficulty. 
+
+The problem arises because such robots may need be used for various tasks not intended during their construction. For example a vacuum cleaner may be used to clean huge hangar, instead of the usual household. Taking into account only the sheer size of a hangar, one can easily see that a single robot is unsuitable for such a task, if the task must be executed in a relatively short amount of time. The solution may be purchasing multiple robots to do the cleaning. Although this may seem like a satisfying solution at first, but then we could notice that the robots will be trying to clean each others sectors of the hangar, even though those were already cleaned.
+
+Hereby we introduce the problem of robots working together to solve a problem in an optimal way, therefore issues related to coordination and  cooperation appear, but also solutions to the said issues.
+
+
+
+When designing a robotic system (RS) each physical component has to be carefully analyzed and the designer of the RS has to decide whether a component is really necessary or not, as some of them may bring to little to the whole comparing the costs it incurs.
 
 
 On the other hand, another important part of designing a RS is the type of communication the robots will use, or the lack thereof.
 
-Strategies for choosing a communication method vary wildly, but many are inspired by biological and also ethological studies, as nature offers  plenty of tested and successful examples of both high-level and low-level communication protocols. One of nature's examples is an ant colony, and this will serve as a parallel in  this paper.
+Strategies for choosing a communication method vary wildly, but many are inspired by biological and also ethological studies, as nature offers  plenty of tested and successful examples of both high-level and low-level communication protocols. Two of nature's examples are an ant colony and a  bees colony, and these will serve as a parallel in this paper.
 
 
 
@@ -194,12 +206,12 @@ This schema implies action-oriented perception: this means that a cycle of recei
 
 This approach however has some issues such as a cyclic behaviour and local minimums or maximums, but there are strategies of countering these issues: high-level planning, continuous adaptation, using various learning strategies and trying not to visit previously visited places.
 
-Each of the three tasks previously described will be presented now from the point of view of their states.
+Each of the three tasks previously described will be presented now from the point of view of their states, and the gains each state's parameters  bring.
 
 
 
 
-\section{Forage state}
+\section{Forage}
 
 While performing  this task, the robots can be in either of three states: deliver, aquire or wander.
 
@@ -360,8 +372,11 @@ Information regarding current cooperation possiblities and goals can be determin
 
 
 
+\chapter{Conclusion}
 
+To sum up, in this paper it has presented the three tasks that a robotic system (RS) should solve: forage, consume and graze along with the most important parameters that are tuned for a specific task which needs solving. Then we have introduced the notion of reactive control and more specifically schema-based reactive control. After that, for each of the three tasks we have presented their states, the ways in which those states change, and the triggers for those changes, along with the gains each parameter of a state brings to the robot.
 
+Lastly, we have presented three types of communication protocols: no communication, state sharing and  goal sharing and how communication can be either controlled by the robot (explicit communication) or implicit communication, where the robot can not chose what information is shared.
 
 
 
@@ -373,127 +388,22 @@ Information regarding current cooperation possiblities and goals can be determin
 
 
 
+\chapter{Bibliography}
 
+\begin{itemize}
 
+\item  Holldobler, B., Wilson, E., 1990. The Ants, Belknap Press, Cambridge Mass.
 
 
+\item Slack, M.G., 1990. Situationally Driven Lo cal Navigation for Mobile Rob ots, JPL Publication 90-17, Jet Propulsion Lab oratory, Pasadena, CA.
 
 
+\item Tucker Balch and Ronald C.Arkin, 1994, Communication in Reactive Multiagent Robotic Systems,  Autonomous Robots, vol. 1, 1-25 
 
 
+\item Arkin, R.C., Balch, T., Nitz, E., 1993. Communication of Behavioral State in Multi-agent Retrieval Tasks, Proc. 1993 IEEE International Conference on Robotics and Automation, Atlanta, GA, vol. 1, p. 678.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\end{itemize}
 
 
 
